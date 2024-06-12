@@ -1,0 +1,23 @@
+BrowserName chrome
+
+url https://qa.swapa.org/
+
+username 112298849
+
+password swapa8849
+
+ExpectedHomePageTitle SWAPA
+
+ExceptedMessageText Submit successful.
+
+ExceptedPilotPollingFormPageTitle Pilot Polling Form
+
+ExceptedDisabilityCalculatorPageTitle 2024 Disability Calculator
+
+expectedText Submit successful.
+
+monthlyTFP 100
+
+sickBank 1250
+
+sickusevalue 35
