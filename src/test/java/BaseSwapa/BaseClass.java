@@ -1,5 +1,8 @@
-package Utilties;
+package BaseSwapa;
 
+import DriverActions.ClickAction;
+import DriverActions.WaitActions;
+import Utilties.PropertiesReader;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -8,7 +11,7 @@ import org.testng.asserts.SoftAssert;
 import java.io.IOException;
 import java.time.Duration;
 
-public class BaseTest {
+public class BaseClass {
     WebDriver driver;
     SoftAssert softAssert;
     PropertiesReader property;
@@ -20,7 +23,7 @@ public class BaseTest {
      *
      * @param driver The WebDriver instance to interact with the browser.
      */
-    public BaseTest(WebDriver driver) {
+    public BaseClass(WebDriver driver) {
         this.driver = driver;
         this.softAssert = new SoftAssert();
         this.property = new PropertiesReader(driver);

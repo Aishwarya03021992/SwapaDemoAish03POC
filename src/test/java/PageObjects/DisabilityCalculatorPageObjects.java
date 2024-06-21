@@ -1,14 +1,17 @@
 package PageObjects;
 
+import DriverActions.ClickAction;
+import DriverActions.MouseHoverActions;
+import DriverActions.SelectAction;
+import DriverActions.WaitActions;
 import Utilties.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -68,15 +71,13 @@ public class DisabilityCalculatorPageObjects {
     public void selectDisabilityCalculator() throws InterruptedException {
         WebElement menuHoverLink = driver.findElement(resources);
         hoverActions.moveToElement(menuHoverLink);
-        Thread.sleep((2000));
-        WebElement calculator = driver.findElement(calculators);
-        calculator.click();
-        Thread.sleep((2000));
-        WebElement disabilityCalculator = driver.findElement(disabilityCalculators);
-        disabilityCalculator.click();
+        clicks.clickAction(driver.findElement(calculators));
+        //this.wait.explicitWaitForElementToBeLocated(disabilityCalculators);
+        Thread.sleep(2000);
+        clicks.clickAction(driver.findElement(disabilityCalculators));
     }
 
-    public void enterDisabilityCalculatorValues() throws InterruptedException {
+    public void enterDisabilityCalculatorValues() throws InterruptedException, IOException {
         selectAction.selectByVisibleText(driver.findElement(seniority), "FO");
         selectAction.selectByIndex(driver.findElement(payRate), 1);
         selectAction.selectByIndex(driver.findElement(STDRate), 0);
@@ -84,20 +85,18 @@ public class DisabilityCalculatorPageObjects {
         selectAction.selectByIndex(driver.findElement(taxRate), 1);
         selectAction.selectByIndex(driver.findElement(lolTaxability), 1);
         selectAction.selectByIndex(driver.findElement(sickUse), 1);
-
-        driver.findElement(sickBank).sendKeys("10.00");
-
+        driver.findElement(sickBank).sendKeys(property.getDataFromPropertyFile("sickBank"));
         driver.findElement(birthDate).clear();
-        driver.findElement(birthDate).sendKeys("08/09/1961");
-        driver.findElement(disabilityCalculatorHeading).click();
-
-        Thread.sleep(2000);
+        driver.findElement(birthDate).sendKeys(property.getDataFromPropertyFile("birthdate"));
+        clicks.clickAction(driver.findElement(disabilityCalculatorHeading));
         driver.findElement(hireDate).clear();
-        driver.findElement(hireDate).sendKeys("07/29/1993");
-        driver.findElement(disabilityCalculatorHeading).click();
-
-        Thread.sleep(2000);
-        driver.findElement(calculateButton).click();
+        driver.findElement(hireDate).sendKeys(property.getDataFromPropertyFile("hireDate"));
+        clicks.clickAction(driver.findElement(disabilityCalculatorHeading));
+        clicks.clickAction(driver.findElement(calculateButton));
+        // Get the title of the Calculator page
+        String calculatorPageTitle = driver.getTitle();
+        // Assert that the Calculator page title matches the expected title from the properties file
+        Assert.assertEquals(calculatorPageTitle, this.property.getDataFromPropertyFile("ExpectedCalculatorPageTitle"), "Calculator Page Tile Mismatch");
 
     }
 
@@ -107,7 +106,6 @@ public class DisabilityCalculatorPageObjects {
         List<WebElement> columnsList = null;
         for (WebElement row : rowsList) {
             columnsList = row.findElements(By.tagName("th"));
-
             for (WebElement column : columnsList) {
                 System.out.println("Column Header : " + column.getText() + ", ");
             }
@@ -118,7 +116,6 @@ public class DisabilityCalculatorPageObjects {
         WebElement Table = driver.findElement(disabilityCalculatorTable);
         List<WebElement> columnsLists = Table.findElements(By.tagName("th"));
         WebElement lastHeading = columnsLists.get(columnsLists.size() - 1);
-
         String heading = lastHeading.getText();
         System.out.println("Column Header : " + columnsLists.get(columnsLists.size() - 1).getText() + ", ");
         Assert.assertTrue(heading.contains("STD"), "Text 'STD' is not present");

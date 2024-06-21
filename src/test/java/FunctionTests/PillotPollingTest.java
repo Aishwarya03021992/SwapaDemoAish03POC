@@ -1,18 +1,19 @@
 package FunctionTests;
 
 
-import Utilties.*;
+import BaseSwapa.BaseClass;
+import BaseSwapa.BrowserFactory;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
 
 public class PillotPollingTest extends BrowserFactory {
 
-    BaseTest login;
+    BaseClass login;
 
     @Test
     public void pillotPollingForm() throws IOException {
-        this.login = new BaseTest(driver);
+        this.login = new BaseClass(driver);
         login.ClickMainLogin();
         login.setUsername(properties.getDataFromPropertyFile("username"));
         login.setPassword(properties.getDataFromPropertyFile("password"));
